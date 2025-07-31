@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Mass Messenger</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>WhatsApp Mass Messenger</h1>
+        
+        <div id="auth-section">
+            <button id="init-btn">Iniciar Sesión con WhatsApp</button>
+            <div id="qr-container" style="display: none;">
+                <p>Escanee el siguiente código QR con WhatsApp:</p>
+                <div id="qr-code"></div>
+            </div>
+            <button id="logout-btn" style="display: none;">Desconectar</button>
+        </div>
+        
+        <div id="message-section" style="display: none;">
+            <h2>Enviar Mensajes Masivos</h2>
+            
+            <form id="message-form">
+                <div class="form-group">
+                    <label for="numbers">Números de teléfono (separados por comas):</label>
+                    <textarea id="numbers" required placeholder="Ejemplo: 5491234567890, 5499876543210"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Mensaje:</label>
+                    <textarea id="message" required placeholder="Escribe tu mensaje aquí..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="file">Archivo adjunto (opcional):</label>
+                    <input type="file" id="file" accept="image/*,.pdf">
+                </div>
+                
+                <div class="form-group">
+                    <label for="schedule">Programar envío (opcional):</label>
+                    <input type="datetime-local" id="schedule">
+                </div>
+                
+                <button type="submit">Enviar Mensajes</button>
+            </form>
+            
+            <div id="status"></div>
+        </div>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
