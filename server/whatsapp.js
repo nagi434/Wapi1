@@ -19,11 +19,14 @@ const init = (io) => {
   });
 
   client.on('qr', async (qr) => {
-    // Convierte el QR a una URL de imagen
-    const qrImage = await qrcode.toDataURL(qr);
-    // Emite el QR a través de Socket.IO
-    io.emit('qr', qrImage);
-    console.log('Por favor, escanea el código QR desde la interfaz web');
+    console.log('Generando código QR...');  // Para depuración
+    try {
+      const qrImage = await qrcode.toDataURL(qr);
+      console.log('Código QR generado:', qrImage.substring(0, 50) + '...');  // Muestra parte del código para depuración
+      io.emit('qr', qrImage);
+    } catch (error) {
+      console.error('Error generando QR:', error);
+    }
   });
 
   client.on('authenticated', () => {

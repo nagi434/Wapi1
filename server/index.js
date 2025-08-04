@@ -11,7 +11,13 @@ const scheduler = require('./scheduler');
 
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer);
+const io = new Server(httpServer, {
+  cors: {
+    origin: ['https://clic-travel.com', 'http://localhost'],
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
 
 const multer = require('multer');
 const storage = multer.diskStorage({
