@@ -1,5 +1,5 @@
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
-const qrcode = require('qrcode-terminal');
+const qrcode = require('qrcode');
 const fs = require('fs-extra');
 const path = require('path');
 
@@ -18,10 +18,12 @@ const init = (io) => {
     }
   });
 
-  client.on('qr', (qr) => {
-    qrCode = qr;
-    qrcode.generate(qr, { small: true });
-    io.emit('qr', qr);
+  client.on('qr', async (qr) => {
+    // Convierte el QR a una URL de imagen
+    const qrImage = await qrcode.toDataURL(qr);
+    // Emite el QR a través de Socket.IO
+    io.emit('qr', qrImage);
+    console.log('Por favor, escanea el código QR desde la interfaz web');
   });
 
   client.on('authenticated', () => {
