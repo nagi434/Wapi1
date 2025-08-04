@@ -3,6 +3,7 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const fs = require('fs-extra');
 const path = require('path');
+const cors = require('cors');
 const whatsapp = require('./whatsapp');
 const scheduler = require('./scheduler');
 
@@ -39,8 +40,28 @@ const upload = multer({
   }
 });
 
-// Configuración
-app.use(express.json());
+// Configuración CORS
+const allowedOrigins = [
+  'http://localhost:3000', // Para desarrollo local
+  'https://tudominio.com'  // Reemplaza con tu dominio de producción (cPanel)
+];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    // Permitir peticiones sin 'origin' (como apps móviles o Postman)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'Origen no permitido por CORS';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true
+}));
+
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Rutas
@@ -172,8 +193,8 @@ io.on('connection', (socket) => {
 });
 
 const PORT = process.env.PORT || 3000;
-httpServer.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+httpServer.listen(PORT, '0.0.0.0', () => {
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
 }).on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
     console.error(`El puerto ${PORT} ya está en uso. Intenta reiniciar la aplicación.`);
