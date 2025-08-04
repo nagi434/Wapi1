@@ -4,8 +4,7 @@
     "main": "server/index.js",
     "scripts": {
         "start": "node server/index.js",
-        "dev": "nodemon server/index.js",
-        "install": "npm install"
+        "dev": "nodemon server/index.js"
     },
     "dependencies": {
         "cors": "^2.8.5",
