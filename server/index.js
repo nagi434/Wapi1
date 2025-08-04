@@ -43,7 +43,7 @@ const upload = multer({
 // Configuración CORS
 const allowedOrigins = [
   'http://localhost:3000', // Para desarrollo local
-  'https://clic-travel.com/'  // Reemplaza con tu dominio de producción (cPanel)
+  'https://clic-travel.com/public'  // Reemplaza con tu dominio de producción (cPanel)
 ];
 
 app.use(cors({
