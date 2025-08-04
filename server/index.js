@@ -4,6 +4,8 @@ const { Server } = require('socket.io');
 const fs = require('fs-extra');
 const path = require('path');
 const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
 const whatsapp = require('./whatsapp');
 const scheduler = require('./scheduler');
 
@@ -43,9 +45,11 @@ const upload = multer({
 // Configuración CORS
 const allowedOrigins = [
   'http://localhost:3000', // Para desarrollo local
-  'https://clic-travel.com/public'  // Reemplaza con tu dominio de producción (cPanel)
+  'https://clic-travel.com'  // Reemplaza con tu dominio de producción (cPanel)
 ];
 
+app.use(helmet());
+app.use(morgan('dev'));
 app.use(cors({
   origin: function(origin, callback) {
     // Permitir peticiones sin 'origin' (como apps móviles o Postman)
@@ -62,11 +66,11 @@ app.use(cors({
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-app.use(express.static(path.join(__dirname, '../public')));
+//app.use(express.static(path.join(__dirname, '../public')));
 
 // Rutas
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+  res.json({ message: 'API de WhatsApp Mass Messenger' });
 });
 
 app.post('/send-message', async (req, res) => {
